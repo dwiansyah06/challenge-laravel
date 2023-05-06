@@ -14,23 +14,27 @@
                             <tr>
                                 <th class="w-1">No.</th>
                                 <th>Nasabah</th>
+                                <th>Description</th>
                                 <th>Point</th>
-                                <th class="w-1"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($points as $index => $point)
+                            @php $total = 0; @endphp
+
+                            @foreach($history as $index => $row)
+
+                            @php $total += $row->point @endphp
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $point->name }}</td>
-                                <td>{{ $point->total_point }}</td>
-                                <td> 
-                                    <a href="{{ route('points.show', $point->account_id) }}" class="btn btn-twitter btn-icon" aria-label="Button">
-                                        <span class="ti ti-eye"></span>
-                                    </a>
-                                </td>
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->description }}</td>
+                                <td>{{ $row->point }}</td>
                             </tr>
                             @endforeach
+                            <tr>
+                                <td colspan="3">Total Point</td>
+                                <td class="total-points">{{ $total }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -10,3 +10,15 @@
     color: #d63939;
     font-size: 13px;
 }
+
+.total-points {
+    font-weight : 800;
+}
+
+.dashboard i {
+    font-size : 20px;
+}
+
+#text-amount {
+    font-weight : 800;
+}

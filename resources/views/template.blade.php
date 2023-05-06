@@ -61,95 +61,50 @@
     <script src="{{ asset('assets/js/tabler.min.js?1674944402') }}" defer></script>
     <script src="{{ asset('assets/js/demo.min.js?1674944402') }}" defer></script>
     <script src="{{ asset('assets/vendor/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     <script>
         $( document ).ready(function() {
             
             getPage()
+            checkAmount()
             
             function getPage() {
                 var page = $('#info-page').data('page')
                 $('#nav-'+page).addClass('active')
             }
 
-            $(".del-nasabah").click(function(){
-                let id = $(this).data('id');
-                let token   = $("#token").data("token");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
+            function checkAmount() {
+                if($("#amount").val() !== '') {
+                    $('#text-amount').html('<div class="spinner-border spinner-border-sm" role="status"></div>');
 
-                            url: `/nasabah/${id}`,
-                            type: "DELETE",
-                            cache: false,
-                            data: {
-                                "_token": token
-                            },
-                            success:function(response){ 
+                    setTimeout(() => {
+                        $('#text-amount').html(formatRupiah($("#amount").val()));
+                    }, 600);
+                    
+                }
+            }
 
-                                //show success message
-                                Swal.fire({
-                                    type: 'success',
-                                    icon: 'success',
-                                    title: `${response.message}`,
-                                    showConfirmButton: false,
-                                    timer: 1000
-                                });
+            function formatRupiah(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 3,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+            
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if(ribuan){
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+            
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            }
 
-                                //remove post on table
-                                $(`#index_${id}`).remove();
-                            }
-                        });
-                    }
-                })
+            $("#amount").keyup(function(e){
+                $('#text-amount').html(formatRupiah($(this).val()));
             });
 
-            $(".del-transaction").click(function(){
-                let id = $(this).data('id');
-                let token   = $("#token").data("token");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-
-                            url: `/transaction/${id}`,
-                            type: "DELETE",
-                            cache: false,
-                            data: {
-                                "_token": token
-                            },
-                            success:function(response){ 
-
-                                //show success message
-                                Swal.fire({
-                                    type: 'success',
-                                    icon: 'success',
-                                    title: `${response.message}`,
-                                    showConfirmButton: false,
-                                    timer: 1000
-                                });
-
-                                //remove post on table
-                                $(`#index_${id}`).remove();
-                            }
-                        });
-                    }
-                })
-            });
 
         });
     </script>

@@ -64,7 +64,8 @@
     </div>
     <div class="mb-3">
         <label class="form-label required">Amount</label>
-        <input class="form-control" name="amount" value="{{ isset($transaction->amount) ? $transaction->amount : old('amount') }}" placeholder="Enter Amount">
+        <input id="amount" class="form-control" name="amount" value="{{ isset($transaction->amount) ? $transaction->amount : old('amount') }}" placeholder="Enter Amount" autocomplete="off">
+        <small class="form-hint d-flex gap-2">Your Amount is : <label id="text-amount"></label></small>
     </div>
 
     </div>

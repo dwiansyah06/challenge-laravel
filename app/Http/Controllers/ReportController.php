@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Nasabah;
 use App\Models\Transaction;
 
+use App\Http\Requests\ReportRequest;
+
 class ReportController extends Controller
 {
     public function index()
@@ -17,15 +19,20 @@ class ReportController extends Controller
         return view('pages.report.index', $data);
     }
 
-    public function store(Request $request)
+    public function store(ReportRequest $request)
     {
         $input = $request->all();
+        $validated = $request->validated();
+
         return redirect('/generate-report?start='.$input['start_date'].'&end='.$input['end_date'].'&id='.$input['account_id']);
     }
 
     public function generateReport(Request $request)
     {
-        
+        if($request->id === null || $request->start === null || $request->end === null) {
+            return redirect('/report');
+        }
+
         $data['report'] = Transaction::where('account_id', '=', $request->id)
                 ->whereBetween('transaction_date', [$request->start, $request->end])
                 ->get();
