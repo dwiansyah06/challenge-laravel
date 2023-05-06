@@ -11,6 +11,8 @@ use App\Models\Nasabah;
 use App\Models\Transaction;
 use App\Models\Point;
 
+use App\Http\Requests\TransactionRequest;
+
 class TransactionController extends Controller
 {
     public function index()
@@ -41,28 +43,16 @@ class TransactionController extends Controller
         return view('pages.transaction.form', $data);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(TransactionRequest $request): RedirectResponse
     {
         $input = $request->all();
         $point = 0;
 
+        $validated = $request->validated();
+
         if($input['description'] === 'Bayar Pulsa' || $input['description'] === 'Bayar Listrik') {
             $point = $this->point($input);
         }
-
-        // $validator = Validator::make($input, [
-        //     'account_id' => 'required',
-        //     'transaction_date' => 'required',
-        //     'description' => 'required',
-        //     'debit_credit_status' => 'required',
-        //     'amount' => 'required|integer'
-        // ]);
-
-        // if($validator->fails()){
-        //     return redirect('/transaction/create')
-        //             ->withErrors($validator)
-        //             ->withInput();
-        // }
 
         $transaction = Transaction::create($input);
 
@@ -77,31 +67,24 @@ class TransactionController extends Controller
         return redirect('/transaction')->with('success', 'Transaction has been saved!');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(TransactionRequest $request, $id): RedirectResponse
     {
         $input = $request->all();
         $point = 0;
 
-        // $validator = Validator::make($input, [
-        //     'name' => 'required|unique:nasabah,name|regex:/^[\pL\s\-]+$/u'
-        // ]);
-
-        // if($validator->fails()){
-        //     return redirect('/nasabah/'.$id.'/edit')
-        //             ->withErrors($validator)
-        //             ->withInput();
-        // }
-
+        $validated = $request->validated();
+        
         $transaction = Transaction::findOrFail($id);
-        $transaction->update($input);
 
-        if($transaction->amount != $input['amount']) {
+        if($transaction->amount !== $input['amount'] || $transaction->account_id !== $input['account_id'] || $transaction->description !== $input['description']) {
             if($input['description'] === 'Bayar Pulsa' || $input['description'] === 'Bayar Listrik') {
                 $point = $this->point($input);
-
-                $pointUpdate = Point::where('transaction_id', $id)->update(['point' => $point]);
             }
+
+            $pointUpdate = Point::where('transaction_id', $id)->update(['point' => $point, 'account_id' => $input['account_id']]);
         }
+
+        $transaction->update($input);
         
     
         return redirect('/transaction')->with('success', 'Transaction updated');

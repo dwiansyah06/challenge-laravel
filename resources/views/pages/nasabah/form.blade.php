@@ -24,7 +24,7 @@
           </div>
           <div>
             <h4 class="alert-title">I'm so sorry&hellip;</h4>
-            <div class="text-muted">
+            <div class="text-alert">
               @foreach ($errors->all() as $error)
                   <li>{{ $error }}</li>
               @endforeach
@@ -39,13 +39,19 @@
         <label class="form-label required">Name</label>
         <div>
           <input class="form-control" aria-describedby="emailHelp" name="name" value="{{ isset($nasabah->name) ? $nasabah->name : old('name') }}" placeholder="Enter your name">
+          @if($pages === 'edit')
+          <small class="form-hint">if you save this old name or new name but it is already available in the database then this process cannot be continued, try to replace it with a new name.</small>
+          @endif
         </div>
       </div>
     </div>
     <div class="card-footer text-end">
+      <a href="{{ route('nasabah.index') }}" class="btn btn-danger">Cancel</a>
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>
 </div>
+
+<div id="info-page" data-page="nasabah"></div>
 
 @endsection

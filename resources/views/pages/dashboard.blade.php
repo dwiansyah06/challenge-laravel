@@ -7,4 +7,6 @@
 
     </div>
 
+    <div id="info-page" data-page="home"></div>
+
 @endsection

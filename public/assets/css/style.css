@@ -5,3 +5,8 @@
 .btn-icon span {
     font-size : 18px;
 }
+
+.text-alert li {
+    color: #d63939;
+    font-size: 13px;
+}

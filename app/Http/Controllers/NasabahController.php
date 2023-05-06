@@ -7,6 +7,10 @@ use Illuminate\Http\RedirectResponse;
 use Validator;
 
 use App\Models\Nasabah;
+use App\Models\Transaction;
+use App\Models\Point;
+
+use App\Http\Requests\NasabahRequest;
 
 class NasabahController extends Controller
 {
@@ -29,38 +33,21 @@ class NasabahController extends Controller
         return view('pages.nasabah.form', ['nasabah' => $nasabah, 'pages' => 'edit']);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(NasabahRequest $request): RedirectResponse
     {
         $input = $request->all();
 
-        $validator = Validator::make($input, [
-            'name' => 'required|unique:nasabah,name|regex:/^[\pL\s\-]+$/u'
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails()){
-            return redirect('/nasabah/create')
-                    ->withErrors($validator)
-                    ->withInput();
-        }
-
-        $product = Nasabah::create($input);
-    
+        $nasabah = Nasabah::create($input);
         return redirect('/nasabah')->with('success', 'Nasabah with name '.$input['name'].' has been saved!');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(NasabahRequest $request, $id): RedirectResponse
     {
         $input = $request->all();
 
-        $validator = Validator::make($input, [
-            'name' => 'required|unique:nasabah,name|regex:/^[\pL\s\-]+$/u'
-        ]);
-
-        if($validator->fails()){
-            return redirect('/nasabah/'.$id.'/edit')
-                    ->withErrors($validator)
-                    ->withInput();
-        }
+        $validated = $request->validated();
 
         $nasabah = Nasabah::findOrFail($id);
         $nasabah->update($input);
@@ -70,8 +57,10 @@ class NasabahController extends Controller
 
     public function destroy($id)
     {
-        //delete post by ID
+        
         Nasabah::where('account_id', $id)->delete();
+        Transaction::where('account_id', $id)->delete();
+        Point::where('account_id', $id)->delete();
 
         //return response
         return response()->json([

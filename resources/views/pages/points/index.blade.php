@@ -33,4 +33,6 @@
         </div>
     </div>
 
+    <div id="info-page" data-page="points"></div>
+
 @endsection

@@ -57,4 +57,6 @@
         </form>
     </div>
 
+    <div id="info-page" data-page="report"></div>
+
 @endsection

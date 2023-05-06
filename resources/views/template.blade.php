@@ -64,6 +64,13 @@
     <script>
         $( document ).ready(function() {
             
+            getPage()
+            
+            function getPage() {
+                var page = $('#info-page').data('page')
+                $('#nav-'+page).addClass('active')
+            }
+
             $(".del-nasabah").click(function(){
                 let id = $(this).data('id');
                 let token   = $("#token").data("token");

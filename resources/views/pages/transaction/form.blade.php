@@ -24,7 +24,7 @@
           </div>
           <div>
             <h4 class="alert-title">I'm so sorry&hellip;</h4>
-            <div class="text-muted">
+            <div class="text-alert">
               @foreach ($errors->all() as $error)
                   <li>{{ $error }}</li>
               @endforeach
@@ -51,6 +51,7 @@
     <div class="mb-3">
         <label class="form-label required">Description</label>
         <input class="form-control" name="description" value="{{ isset($transaction->description) ? $transaction->description : old('description') }}" placeholder="Enter Description">
+        <small class="form-hint">For transaction 'Bayar Pulsa' Or 'Bayar Listrik' can get you point.</small>
     </div>
     <div class="mb-3">
         <label class="form-label required">Debit Credit</label>
@@ -68,9 +69,12 @@
 
     </div>
     <div class="card-footer text-end">
+      <a href="{{ route('transaction.index') }}" class="btn btn-danger">Cancel</a>
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>
 </div>
+
+<div id="info-page" data-page="transaction"></div>
 
 @endsection

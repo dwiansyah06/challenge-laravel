@@ -56,4 +56,6 @@
         </div>
     </div>
 
+    <div id="info-page" data-page="nasabah"></div>
+
 @endsection

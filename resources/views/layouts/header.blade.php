@@ -30,7 +30,7 @@
         <div class="navbar navbar-light">
             <div class="container-xl">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li id="nav-home" class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-home"></i></span>
                             <span class="nav-link-title">
@@ -38,7 +38,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li id="nav-nasabah" class="nav-item">
                         <a class="nav-link" href="{{ route('nasabah.index') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-users"></i></span>
                             <span class="nav-link-title">
@@ -46,7 +46,7 @@
                             </span>
                         </a>
                     </li>    
-                    <li class="nav-item">
+                    <li id="nav-transaction" class="nav-item">
                         <a class="nav-link" href="{{ route('transaction.index') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-report-money"></i></span>
                             <span class="nav-link-title">
@@ -54,7 +54,7 @@
                             </span>
                         </a>
                     </li>   
-                    <li class="nav-item">
+                    <li id="nav-points" class="nav-item">
                         <a class="nav-link" href="{{ route('points.index') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-coins"></i></span>
                             <span class="nav-link-title">
@@ -62,7 +62,7 @@
                             </span>
                         </a>
                     </li>   
-                    <li class="nav-item">
+                    <li id="nav-report" class="nav-item">
                         <a class="nav-link" href="{{ route('report.index') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-report-search"></i></span>
                             <span class="nav-link-title">
